@@ -7,6 +7,8 @@ import Login from "./pages/Login";
 import ErrorPage from "./pages/ErrorPage";
 import InMemoryJwtManager from "./utils/InMemoryJwtManager";
 import Members from "./pages/Members";
+import SecuredRoute from "./components/SecuredRoute";
+import RedirectableRoute from "./components/RedirectableRoute";
 
 function AppRouter() {
 
@@ -16,12 +18,24 @@ function AppRouter() {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<App loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}>
+                    {/* unprotected route */}
                     <Route index element={<Home />} />
-                    <Route path='/register' element={loggedIn ? <Home /> : <Register />} />
-                    <Route path='/login' element={loggedIn ? <Home /> : <Login setLoggedIn={setLoggedIn} />} />
-                    {loggedIn &&
-                        <Route path='/member' element={<Members />} />
-                    }
+
+                    {/* routes that redirect upon logging in */}
+                    <Route path='/login' element={
+                        <RedirectableRoute predicate={loggedIn} isTrue={<Home />} isFalse={<Login setLoggedIn={setLoggedIn} />} />
+                    } />
+
+                    <Route path='/register' element={
+                        <RedirectableRoute predicate={loggedIn} isTrue={<Home />} isFalse={<Register />} />
+                    } />
+
+                    {/* routes that require being logged in to view */}
+                    <Route path="/member" element={
+                        <SecuredRoute loggedIn={loggedIn}>
+                            <Members />
+                        </SecuredRoute>
+                    } />
                 </Route>
                 <Route path="*" element={<ErrorPage />} />
             </Routes>

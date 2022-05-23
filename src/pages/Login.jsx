@@ -20,11 +20,10 @@ export default function Login({ setLoggedIn }) {
         AuthenticationService.login(user)
             .then(response => response.json())
             .then(data => {
-                InMemoryJwtManager.setToken(data.token);
+                console.log(data);
+                InMemoryJwtManager.setToken(data.token, data.expiration);
                 setLoggedIn(true);
-            }).catch(err => {
-                // handle error
-            });
+            }).catch(console.error);
     }
 
     return (
