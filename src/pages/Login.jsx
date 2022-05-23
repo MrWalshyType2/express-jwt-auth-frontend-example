@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import InMemoryJwtManager from "../utils/InMemoryJwtManager";
+import AuthenticationService from '../utils/AuthenticationService';
 
 export default function Login({ setLoggedIn }) {
 
@@ -16,21 +17,14 @@ export default function Login({ setLoggedIn }) {
     const handleSubmit = event => {
         event.preventDefault();
 
-        fetch('http://localhost:5500/login', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        }).then(response => response.json())
-          .then(data => {
-            InMemoryJwtManager.setToken(data.token);
-            setLoggedIn(true);
-        }).catch(err => {
-            // handle error
-        });
+        AuthenticationService.login(user)
+            .then(response => response.json())
+            .then(data => {
+                InMemoryJwtManager.setToken(data.token);
+                setLoggedIn(true);
+            }).catch(err => {
+                // handle error
+            });
     }
 
     return (

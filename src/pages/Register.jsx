@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AuthenticationService from '../utils/AuthenticationService';
 
 export default function Register(props) {
 
@@ -16,15 +17,7 @@ export default function Register(props) {
     const handleSubmit = event => {
         event.preventDefault();
 
-        fetch('http://localhost:5500/register', {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        }).then(response => {
+        AuthenticationService.register(user).then(response => {
             console.log(response);
             window.location = "/login";
         }).catch(err => {
