@@ -6,8 +6,8 @@
 import AuthenticationService from "./AuthenticationService";
 
 function InMemoryJwtManager() {
-    let jwt = null;
-    let refreshId = null;
+    let jwt = null; // the stored token
+    let refreshId = null; // the id of the refresh timeout applied to the window
 
     /**
      * Returns the currently stored in-memory JWT.
@@ -41,7 +41,7 @@ function InMemoryJwtManager() {
                 .then(response => response.json())
                 .then(data =>  setToken(data.token, data.expiration))
                 .catch(console.error);
-        }, delayInSeconds * 1000);
+        }, delayInSeconds * 1000); // setTimeout takes a time in milliseconds, so we convert seconds to milliseconds
     }
 
     /**

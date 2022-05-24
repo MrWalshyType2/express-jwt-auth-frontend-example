@@ -12,6 +12,7 @@ import RedirectableRoute from "./components/RedirectableRoute";
 
 function AppRouter() {
 
+    // track whether the uses is logged in
     const [loggedIn, setLoggedIn] = useState(false);
 
     return (
@@ -23,6 +24,8 @@ function AppRouter() {
 
                     {/* routes that redirect upon logging in */}
                     <Route path='/login' element={
+                        // if loggedIn, /login displays the <Home /> component if ever reached (shouldn't be able to though)
+                        // otherwise if not logged in, the <Login /> component is rendered instead
                         <RedirectableRoute predicate={loggedIn} isTrue={<Home />} isFalse={<Login setLoggedIn={setLoggedIn} />} />
                     } />
 
@@ -32,7 +35,9 @@ function AppRouter() {
 
                     {/* routes that require being logged in to view */}
                     <Route path="/member" element={
+                        // custom components can have opening and closing tags
                         <SecuredRoute loggedIn={loggedIn}>
+                            {/* we access the nested components using the 'children' prop */}
                             <Members />
                         </SecuredRoute>
                     } />

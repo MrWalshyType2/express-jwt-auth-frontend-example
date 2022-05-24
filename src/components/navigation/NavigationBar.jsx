@@ -14,6 +14,9 @@ function NavigationBar(props) {
         });
     }
 
+    /**
+     * Remove the token stored in memory and set the loggedIn state in AppRouter to false.
+     */
     function logout() {
         InMemoryJwtManager.removeToken();
         props.setLoggedIn(false);
@@ -26,6 +29,7 @@ function NavigationBar(props) {
 
             {/* if logged in, render the members navbar, otherwise render the login and register buttons */}
             <RedirectableRoute predicate={props.loggedIn} isTrue = {
+                // we can pass components as props to be rendered inside other components
                 <>
                     <NavigationLink to="/member" value="Members Zone" toggled={toggled} />
                     <Link className="nav-link" to="#" onClick={logout}>Logout</Link>
