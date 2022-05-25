@@ -19,6 +19,7 @@ const login = (data) => {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
+        credentials: 'include', // include cookies in the request that came from the same origin, saves new cookies received
         headers: {
             'Content-type': 'application/json'
         },
@@ -54,6 +55,7 @@ const refresh = () => {
         method: 'POST',
         mode: 'cors',
         cache: 'no-cache',
+        credentials: 'include', // include cookies in the request that came from the same origin, saves new cookies received
         headers: {
             'Authorization': `Bearer ${InMemoryJwtManager.getToken()}`
         }
